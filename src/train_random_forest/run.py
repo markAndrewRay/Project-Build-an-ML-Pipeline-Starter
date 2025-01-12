@@ -72,12 +72,6 @@ def go(args):
 
     # Then fit it to the X_train, y_train data
     logger.info("Fitting")
-
-    ######################################
-    # Fit the pipeline sk_pipe by calling the .fit method on X_train and y_train
-    # YOUR CODE HERE
-    ######################################
-
     sk_pipe.fit(X_train, y_train)
 
     # Compute r2 and MAE
@@ -101,11 +95,10 @@ def go(args):
     # HINT: use mlflow.sklearn.save_model
 
     X_val = X_val.applymap(str)
-
     signature = mlflow.models.infer_signature(X_val, y_pred)
     mlflow.sklearn.save_model(
-        sk_pipe,
-        "random_forest_dir",
+        sk_model = sk_pipe,
+        path = "random_forest_dir",
         signature = signature,
         input_example = X_train.iloc[:5]
     )
@@ -237,8 +230,8 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
 
     sk_pipe = Pipeline(
         steps =[
-        ("preprocessor", preprocessor),
-        ("random_forest", random_forest)
+            ("preprocessor", preprocessor),
+            ("random_forest", random_forest)
         ]
     )
 
